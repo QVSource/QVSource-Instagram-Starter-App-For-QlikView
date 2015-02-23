@@ -1,0 +1,222 @@
+﻿///$tab Change Log
+/*
+1.0.0.0 - 23/02/15
+------------------
+* Initial release.
+*/
+///$tab Setup
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+
+//
+// This external file contains the configuration for the application. 
+//
+$(include=config.txt);
+///$tab Check Version
+sub CheckQVSourceStatus
+ 
+    set errormode = 0;
+     
+    QVSourceStatus:
+    LOAD Version,
+        SubField(Version, '.', 1) as Version_Major,
+        SubField(Version, '.', 2) as Version_Minor,
+        SubField(Version, '.', 3) as Version_Build,
+        SubField(Version, '.', 4) as Version_Revision,
+        ServerMode,
+        Path,
+        Licensed,
+        LicenseExpires,
+        IsLicensedAsServer
+    FROM [$(vQVSourceBaseUrl)/QVSource?format=xml] (XmlSimple, Table is [QVSource]);
+          
+    if(ScriptError <> '') then   
+        //
+        // Looks like QVSOurce is not even running.
+        //
+        // Log message here or send email using QVSource Notifier Connector
+        //
+        trace 'QVSource is not running or not running on the requested port number.';
+        exit script;
+    endif     
+      
+    if(peek('Licensed', 0, 'QVSourceStatus') <> 'true') then
+        //
+        // QVSource is running but not licensed.
+        //
+        // Log message here or send email using QVSource Notifier Connector
+        //
+        trace 'QVSource is running but not licensed.';
+        exit script;
+    endif
+ 
+    if(peek('ServerMode', 0, 'QVSourceStatus') = 'true' and peek('IsLicensedAsServer', 0, 'QVSourceStatus') = 'false') then
+        //
+        // QVSource is running but not licensed to run in server mode.
+        //
+        // Log message here or send email using QVSource Notifier Connector
+        //
+        trace 'QVSource is running but not licensed to run in server mode.';
+        exit script;
+    endif     
+     
+    let currentVersionAsInt = (peek('Version_Major', 0, 'QVSourceStatus') * 1000) + (peek('Version_Minor', 0, 'QVSourceStatus') * 100) + (peek('Version_Build', 0, 'QVSourceStatus') * 10) + peek('Version_Revision', 0, 'QVSourceStatus');
+ 
+    // Let's pretend we need QVSource 1.4.2.6 or later....  
+    if(currentVersionAsInt < 1585) then
+        // Log message here or send email using QVSource Notifier Connector
+        trace 'Version too low. Please update QVSource.';
+        exit script;
+    endif
+     
+    QVSourceConnectorStatus:
+    LOAD Name as ConnectorName,
+        Version as ConnectorVersion,
+        Licensed as ConnectorLicensed
+    FROM [$(vQVSourceBaseUrl)/QVSource?format=xml] (XmlSimple, Table is [QVSource/Connectors/Connector]);
+     
+    //
+    // Run other QVSource or connector specific tests here before deciding whether
+    // to proceed and load the rest of the application.
+    //
+    
+    CanAuthenticate:
+    LOAD
+    	authenticated as CanAuthenticateauthenticated,
+	    error_message as CanAuthenticateerror_message
+	FROM 
+		[$(vQVSourceBaseUrl)/QVSource/InstagramConnector/?table=CanAuthenticate&appID=&loadAccessToken=02891j392j]
+		(qvx);
+             
+    if(peek('CanAuthenticateauthenticated', 0, 'CanAuthenticate') = 'true') then
+	    trace 'Authenticated for Instagram.';
+    else
+        //
+        // Not authenticated.
+        //
+        // Log message here or send email using QVSource Notifier Connector
+        //
+        trace 'Not authenticated for Instagram.';
+        exit script;
+    endif     
+         
+    set errormode = 1;
+
+	drop table QVSourceStatus;
+	 
+endsub
+///$tab Instagram
+sub downloadMedia
+
+	let vMaxMinTagID = '';
+	let vIsFirstTime = 1; // Assume first time, set to false below if not.
+	let vMediaQVD = 'Media.qvd';
+		
+	let size = filesize('$(vMediaQVD)');
+	
+	if not isnull(size) then
+		
+		Media:
+		load
+		*
+		from '$(vMediaQVD)' (qvd);
+		
+		// TODO probably can just get this from the above table?
+		Temp:
+		load
+			MaxString(Mediamin_tag_id) as MaxMinTagID
+		from '$(vMediaQVD)' (qvd);
+		
+		vMaxMinTagID = peek('MaxMinTagID', 0, 'Temp')
+		
+		drop table Temp;
+		
+		let vIsFirstTime = 0;
+	end if
+	
+	if (vIsFirstTime = 1) then
+		let vMaxItems = vMaxItemsOnFirstReload;
+	else
+		let vMaxItems = vMaxItemsOnSubsequentReloads;
+	end if
+	
+	trace 'vIsFirstTime = ' + $(vIsFirstTime) + ' vMaxItems = ' + $(vMaxItems) + ', vMaxMinTagID=' + $(vMaxMinTagID);
+	
+	Media:
+	LOAD
+		id as Mediaid,
+		min_tag_id as Mediamin_tag_id,
+		max_tag_id as Mediamax_tag_id,
+		type as Mediatype,
+		tags as Mediatags,
+		location_id as Medialocation_id,
+		location_name as Medialocation_name,
+		location_latitude as Medialocation_latitude,
+		location_longitude as Medialocation_longitude,
+		filter as Mediafilter,
+		link as Medialink,
+		created_time as Mediacreated_time,
+		created_time_utc as Mediacreated_time_utc,
+		timestamp#(created_time_utc, 'DD-MM-YYYY hh:mm:ss') as Mediacreated_time_utc_qlik_timestamp,
+		date#(left(created_time_utc, 10), 'DD-MM-YYYY') as Mediacreated_time_utc_qlik_date,
+		comments_count as Mediacomments_count,
+		likes_count as Medialikes_count,
+		caption_created_time as Mediacaption_created_time,
+		caption_created_time_utc as Mediacaption_created_time_utc,
+		timestamp#(caption_created_time_utc, 'DD-MM-YYYY hh:mm:ss') as Mediacaption_created_time_utc_qlik_timestamp,
+		date#(left(caption_created_time_utc, 10), 'DD-MM-YYYY') as Mediacaption_created_time_utc_qlik_date,
+		caption_text as Mediacaption_text,
+		caption_from_username as Mediacaption_from_username,
+		caption_from_profile_picture as Mediacaption_from_profile_picture,
+		caption_from_id as Mediacaption_from_id,
+		caption_from_full_name as Mediacaption_from_full_name,
+		caption_id as Mediacaption_id,
+		images_low_resolution_url as Mediaimages_low_resolution_url,
+		images_low_resolution_width as Mediaimages_low_resolution_width,
+		images_low_resolution_height as Mediaimages_low_resolution_height,
+		images_thumbnail_url as Mediaimages_thumbnail_url,
+		images_thumbnail_width as Mediaimages_thumbnail_width,
+		images_thumbnail_height as Mediaimages_thumbnail_height,
+		images_standard_resolution_url as Mediaimages_standard_resolution_url,
+		images_standard_resolution_width as Mediaimages_standard_resolution_width,
+		images_standard_resolution_height as Mediaimages_standard_resolution_height,
+		videos_low_bandwidth_url as Mediavideos_low_bandwidth_url,
+		videos_low_bandwidth_width as Mediavideos_low_bandwidth_width,
+		videos_low_bandwidth_height as Mediavideos_low_bandwidth_height,
+		videos_standard_resolution_url as Mediavideos_standard_resolution_url,
+		videos_standard_resolution_width as Mediavideos_standard_resolution_width,
+		videos_standard_resolution_height as Mediavideos_standard_resolution_height,
+		videos_low_resolution_url as Mediavideos_low_resolution_url,
+		videos_low_resolution_width as Mediavideos_low_resolution_width,
+		videos_low_resolution_height as Mediavideos_low_resolution_height,
+		user_has_liked as Mediauser_has_liked,
+		user_username as Mediauser_username,
+		user_website as Mediauser_website,
+		user_profile_picture as Mediauser_profile_picture,
+		user_full_name as Mediauser_full_name,
+		user_bio as Mediauser_bio,
+		user_id as Mediauser_id,
+		users_in_photo_count as Mediausers_in_photo_count,
+		users_in_photo_user_ids as Mediausers_in_photo_user_ids
+	FROM
+	[$(vQVSourceBaseUrl)/QVSource/InstagramConnector/?table=MediaByTag&appID=&tag=$(vSearchTag)&minTagId=$(vMaxMinTagID)&count=$(vMaxItems)]
+	(qvx);
+	// IMPORTANT: If, when loading the above script, you receive a 'Script Error' Dialog box with a 'Field Not Found'
+	// (or other) error, the first thing you should do is copy and paste the full request URL (i.e. the URL between the square [...]
+	// brackets IN THE QLIKVIEW / QLIK SENSE SCRIPT ERROR DIALOG) into a browser address bar and check the response.
+	
+	store Media into '$(vMediaQVD)' (qvd);
+	
+end sub
+///$tab Main
+call CheckQVSourceStatus;
+
+call downloadMedia;

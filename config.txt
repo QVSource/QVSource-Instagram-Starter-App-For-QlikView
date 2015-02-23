@@ -1,0 +1,8 @@
+
+
+
+let vQVSourceBaseUrl = 'http://localhost:5555';
+let vSearchTag = 'cocacola';
+
+let vMaxItemsOnFirstReload = 100;
+let vMaxItemsOnSubsequentReloads = 1000;
