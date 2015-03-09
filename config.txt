@@ -1,6 +1,3 @@
-
-
-
 let vQVSourceBaseUrl = 'http://localhost:5555';
 let vSearchTag = 'cocacola';
 

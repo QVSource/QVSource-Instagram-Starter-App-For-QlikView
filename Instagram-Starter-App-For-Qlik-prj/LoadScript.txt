@@ -1,7 +1,11 @@
 ﻿///$tab Change Log
 /*
-1.0.0.0 - 23/02/15
-------------------
+1.0.1 - 09/03/15
+----------------
+* Removed user bio and website columns (Instagram have removed these from their API).
+
+1.0.0 - 23/02/15
+----------------
 * Initial release.
 */
 ///$tab Setup
@@ -199,17 +203,15 @@ sub downloadMedia
 		videos_low_resolution_height as Mediavideos_low_resolution_height,
 		user_has_liked as Mediauser_has_liked,
 		user_username as Mediauser_username,
-		user_website as Mediauser_website,
 		user_profile_picture as Mediauser_profile_picture,
 		user_full_name as Mediauser_full_name,
-		user_bio as Mediauser_bio,
 		user_id as Mediauser_id,
 		users_in_photo_count as Mediausers_in_photo_count,
 		users_in_photo_user_ids as Mediausers_in_photo_user_ids
 	FROM
 	[$(vQVSourceBaseUrl)/QVSource/InstagramConnector/?table=MediaByTag&appID=&tag=$(vSearchTag)&minTagId=$(vMaxMinTagID)&count=$(vMaxItems)]
 	(qvx);
-	// IMPORTANT: If, when loading the above script, you receive a 'Script Error' Dialog box with a 'Field Not Found'
+	// IMPORTANT: If, when loading the above script, you receive a QlikView 'Script Error' Dialog box with a 'Field Not Found'
 	// (or other) error, the first thing you should do is copy and paste the full request URL (i.e. the URL between the square [...]
 	// brackets IN THE QLIKVIEW / QLIK SENSE SCRIPT ERROR DIALOG) into a browser address bar and check the response.
 	

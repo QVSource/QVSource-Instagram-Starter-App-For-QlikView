@@ -18,6 +18,10 @@ The content below is copied from the change log in the first tab of the load scr
 
 Change Log
 ----------
-1.0.0.0 - 23/02/15
-------------------
+1.0.1 - 09/03/15
+----------------
+* Removed user bio and website columns (Instagram have removed these from their API).
+
+1.0.0 - 23/02/15
+----------------
 * Initial release.

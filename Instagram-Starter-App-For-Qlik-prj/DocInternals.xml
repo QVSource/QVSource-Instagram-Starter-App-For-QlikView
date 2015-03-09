@@ -6,55 +6,53 @@
     <bool>false</bool>
     <bool>false</bool>
     <bool>false</bool>
-    <bool>false</bool>
-    <bool>false</bool>
   </AlwaysLoose>
   <FieldSrcTables>
     <String>6</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>QVSourceConnectorStatus</String>
     <String>7</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>QVSourceConnectorStatus</String>
     <String>8</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>QVSourceConnectorStatus</String>
     <String>9</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>CanAuthenticate</String>
     <String>10</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>CanAuthenticate</String>
     <String>11</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>Media</String>
     <String>12</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>Media</String>
     <String>13</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>Media</String>
     <String>14</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>Media</String>
     <String>15</String>
     <String>1</String>
-    <String>QVSourceStatus</String>
+    <String>Media</String>
     <String>16</String>
     <String>1</String>
-    <String>QVSourceConnectorStatus</String>
+    <String>Media</String>
     <String>17</String>
     <String>1</String>
-    <String>QVSourceConnectorStatus</String>
+    <String>Media</String>
     <String>18</String>
     <String>1</String>
-    <String>QVSourceConnectorStatus</String>
+    <String>Media</String>
     <String>19</String>
     <String>1</String>
-    <String>CanAuthenticate</String>
+    <String>Media</String>
     <String>20</String>
     <String>1</String>
-    <String>CanAuthenticate</String>
+    <String>Media</String>
     <String>21</String>
     <String>1</String>
     <String>Media</String>
@@ -181,45 +179,6 @@
     <String>62</String>
     <String>1</String>
     <String>Media</String>
-    <String>63</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>64</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>65</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>66</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>67</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>68</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>69</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>70</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>71</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>72</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>73</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>74</String>
-    <String>1</String>
-    <String>Media</String>
-    <String>75</String>
-    <String>1</String>
-    <String>Temp</String>
   </FieldSrcTables>
   <TableViewData>
     <Pos></Pos>
@@ -357,12 +316,6 @@
           <String>$Field</String>
           <String>$Table</String>
           <String>$Info</String>
-          <String>Version</String>
-          <String>ServerMode</String>
-          <String>Path</String>
-          <String>Licensed</String>
-          <String>LicenseExpires</String>
-          <String>IsLicensedAsServer</String>
           <String>ConnectorName</String>
           <String>ConnectorVersion</String>
           <String>ConnectorLicensed</String>
@@ -383,20 +336,11 @@
           <String>Mediaimages_thumbnail_url</String>
           <String>Mediaimages_standard_resolution_url</String>
           <String>Mediavideos_low_bandwidth_url</String>
-          <String>Mediavideos_low_bandwidth_width</String>
-          <String>Mediavideos_low_bandwidth_height</String>
           <String>Mediavideos_standard_resolution_url</String>
-          <String>Mediavideos_standard_resolution_width</String>
-          <String>Mediavideos_standard_resolution_height</String>
           <String>Mediavideos_low_resolution_url</String>
-          <String>Mediavideos_low_resolution_width</String>
-          <String>Mediavideos_low_resolution_height</String>
           <String>Mediauser_has_liked</String>
           <String>Mediauser_username</String>
-          <String>Mediauser_website</String>
           <String>Mediauser_profile_picture</String>
-          <String>Mediauser_bio</String>
-          <String>MaxMinTagID</String>
         </FieldNames>
       </FieldTagData>
       <FieldTagData>
@@ -405,12 +349,6 @@
           <String>$Field</String>
           <String>$Table</String>
           <String>$Info</String>
-          <String>Version</String>
-          <String>ServerMode</String>
-          <String>Path</String>
-          <String>Licensed</String>
-          <String>LicenseExpires</String>
-          <String>IsLicensedAsServer</String>
           <String>ConnectorName</String>
           <String>ConnectorVersion</String>
           <String>ConnectorLicensed</String>
@@ -435,21 +373,12 @@
           <String>Mediaimages_thumbnail_url</String>
           <String>Mediaimages_standard_resolution_url</String>
           <String>Mediavideos_low_bandwidth_url</String>
-          <String>Mediavideos_low_bandwidth_width</String>
-          <String>Mediavideos_low_bandwidth_height</String>
           <String>Mediavideos_standard_resolution_url</String>
-          <String>Mediavideos_standard_resolution_width</String>
-          <String>Mediavideos_standard_resolution_height</String>
           <String>Mediavideos_low_resolution_url</String>
-          <String>Mediavideos_low_resolution_width</String>
-          <String>Mediavideos_low_resolution_height</String>
           <String>Mediauser_has_liked</String>
           <String>Mediauser_username</String>
-          <String>Mediauser_website</String>
           <String>Mediauser_profile_picture</String>
           <String>Mediauser_full_name</String>
-          <String>Mediauser_bio</String>
-          <String>MaxMinTagID</String>
         </FieldNames>
       </FieldTagData>
       <FieldTagData>
@@ -458,10 +387,6 @@
           <String>$Rows</String>
           <String>$Fields</String>
           <String>$FieldNo</String>
-          <String>Version_Major</String>
-          <String>Version_Minor</String>
-          <String>Version_Build</String>
-          <String>Version_Revision</String>
           <String>Mediacreated_time</String>
           <String>Mediacreated_time_utc_qlik_timestamp</String>
           <String>Mediacreated_time_utc_qlik_date</String>
@@ -487,10 +412,6 @@
           <String>$Rows</String>
           <String>$Fields</String>
           <String>$FieldNo</String>
-          <String>Version_Major</String>
-          <String>Version_Minor</String>
-          <String>Version_Build</String>
-          <String>Version_Revision</String>
           <String>Mediacreated_time</String>
           <String>Mediacreated_time_utc_qlik_date</String>
           <String>Mediacomments_count</String>
