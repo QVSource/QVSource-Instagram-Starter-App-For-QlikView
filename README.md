@@ -1,3 +1,11 @@
+In December 2015, Instagram introduced a new approval process for applications which use their API. Unfortunately our application (for the QVSource Instagram Connector) was rejected which means we can no longer offer this connector.
+
+If you have a version of QVSource which uses the Connector it will likely only function correctly until June 2016, and in any case, we would encourage you to not use the connector any longer.
+
+We are currently leaving this starter app in place in case we are able to successfully re-apply for API access in the future.
+
+------------------
+
 QVSource Instagram Starter App For QlikView
 ===================================================
 **IMPORTANT** - You will need QVSource 1.5.8.5 or later to run this application.
