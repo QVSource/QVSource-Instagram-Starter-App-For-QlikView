@@ -1,4 +1,4 @@
-**IMPORTANT** In December 2015, Instagram introduced a new approval process for applications which use their API. Unfortunately our application (for the QVSource Instagram Connector) was rejected which means we can no longer offer this connector.
+**IMPORTANT**: In December 2015, Instagram introduced a new approval process for applications which use their API. Unfortunately our application (for the QVSource Instagram Connector) was rejected which means we can no longer offer this connector.
 
 If you have a version of QVSource which uses the Connector it will likely only function correctly until June 2016, and in any case, we would encourage you to not use the connector any longer.
 
